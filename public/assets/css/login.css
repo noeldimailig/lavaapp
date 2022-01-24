@@ -1,0 +1,41 @@
+body {
+	background-color: #f6f7f6;
+}
+#main {
+	margin-top: 75px;
+}
+.main-body {
+	width: 85%;
+	height: 80vh;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.image-box {
+	width: 600px;
+	height: 80vh;
+	padding: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.image-box img {
+	width: 100%;
+	height: 100%;
+}
+.login-form, .signup-form {
+	width: 600px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.login-form #signin, .signup-form #signup {
+	background-color: #5fcf80;
+	border: none;
+	color: #fff;
+}

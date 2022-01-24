@@ -1,0 +1,5 @@
+{
+    "require": {
+        "iamdual/uploader": "^0.2.10"
+    }
+}

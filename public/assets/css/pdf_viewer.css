@@ -1,0 +1,130 @@
+body {
+  background-color: #f6f7f6;
+}
+#main {
+  margin-top: 75px;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.main-body {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Viewer */
+.pdf-body {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #2e3033;
+  padding: 30px;
+}
+
+.top-bar {
+  margin:0;
+  background: #191a1c;
+  color: #fff;
+  padding: 0.5rem;
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.top-bar .title, .top-bar span {
+  font-size: 12px;
+}
+
+.btns {
+  /*background: #0e9e4f;*/
+  color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  /*padding: 0.2rem 1rem;*/
+}
+
+.btns:hover {
+  opacity: 0.9;
+}
+.search-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.pdf-info {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.pdf-info h4 {
+  color: #5fcf80;
+  margin-bottom: 20px;
+}
+.pdf-info h6 {
+  color: #393E46;
+  margin-bottom: 20px;
+}
+.pdf-info p {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-transform: justify-content;
+}
+.pdf-info span {
+  font-size: 10px;
+  margin-left: 10px;
+}
+.info {
+  padding: 30px;
+  height: auto;
+  background-color: #ffffff;
+}
+#pdf-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#text-layer { 
+   position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    opacity: 0.2;
+    line-height: 1.0;
+}
+
+#text-layer > div {
+    color: transparent;
+    position: absolute;
+    white-space: pre;
+    cursor: text;
+    transform-origin: 0% 0%;
+}
