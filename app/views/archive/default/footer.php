@@ -60,7 +60,7 @@
                 &copy; Copyright <strong><span>Elite Researcher</span></strong>. All Rights Reserved
             </div>
             <div class="credits">
-                Developed by <a href="index.php">Dimailig | Pine | Cabello</a>
+                Developed by <a href="#">Dimailig | Pine | Cabello</a>
             </div>
         </div>
         <div class="social-links text-center text-md-right pt-3 pt-md-0">

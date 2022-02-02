@@ -432,7 +432,7 @@
             <!-- Footer -->
             <footer class="footer mt-auto px-5 py-2 bg-white border-top footer" >
                 <div class="container d-flex flex-row align-items-start justify-content-center">
-                    <span class="text-muted"> &copy; 2021 | </span> <p class="ml-2">Dimailig & Pine</p>
+                    <span class="text-muted"> &copy; 2021 | </span> <p class="ml-2">Dimailig | Pine | Cabello</p>
                 </div>
             </footer>
             <!-- End Footer -->

@@ -9,6 +9,12 @@ class Nav extends Controller {
 		$this->call->helper(array('alert'));
 	}
 
+	public function last_id(){
+		$this->call->model('User_model');
+
+		echo $this->User_model->get_last_id('users');
+	}
+
 	public function index() {
 		$this->call->model('Docs_model');
 
@@ -396,7 +402,6 @@ class Nav extends Controller {
 		$filename = $this->io->post('filename');
 
 		if($this->Docs_model->document_delete($id)){
-			unlink(PUBLIC_DIR.'/public/documents/'.$filename);
 			redirect('nav/document');
 		}
 	}

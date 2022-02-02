@@ -20,6 +20,8 @@ class User extends Controller {
 	}
 
 	public function register() {
+		$this->call->model('User_model');
+
 		$username = $this->io->post('name');
 		$password = $this->io->post('password');
 		$confirm = $this->io->post('confirm');
@@ -30,6 +32,22 @@ class User extends Controller {
 		if(password_verify($confirm, $hash) == true){
 			$this->auth->register($username, $password, $email);
 			$this->auth->set_logged_in($username);
+
+			$id = $this->User_model->get_last_id();
+
+			$userdata = array(
+				'user_id' => $id,
+				'username' => $username,
+				'campus' => 'NONE',
+				'dep' => 'NONE',
+				'firstname' => 'NONE',
+				'lastname' => 'NONE',
+				'program' => 'NONE',
+				'user_profile' => 'profile.png',
+				'user_role' => 'user',
+				'user_email' => $email
+			);
+			$this->session->set_userdata($userdata);
 			redirect('nav/index');
 		}else {
 			$this->session->set_flashdata(array('error' => 'Password do not match!!'));

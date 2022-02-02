@@ -7,6 +7,10 @@ class User_model extends Model{
         $this->call->database();
     }
 
+    public function get_last_id() {
+        $this->db->last_id();
+    }
+
     public function checksubs($uid, $email){
         $condition = [
             'user_id' => $uid,
