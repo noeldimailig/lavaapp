@@ -46,11 +46,13 @@ $db = new DBConnection();
                                 <?php if($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3) : ?>
                                     <li><a href="<?php echo site_url('nav/dashboard'); ?>">Go to Dashboard</a></li>
                                     <li><a href="<?php echo site_url("nav/myprofile/". encrypt_id($_SESSION['user_id'])); ?>">My Profile</a></li>
+                                    <li><a href="<?php echo site_url("nav/mydocuments/". encrypt_id($_SESSION['user_id'])); ?>">My Documents</a></li>
                                     <li><a href="<?php echo site_url('nav/mycitations/'. encrypt_id($_SESSION['user_id'])); ?>">Saved Citations</a></li>
                                     <li><a href="<?php echo site_url('nav/mybookmarks/'. encrypt_id($_SESSION['user_id'])); ?>">Bookmarked Documents</a></li>
                                     <li><a href="<?php echo site_url('nav/logout'); ?>">Log Out</a></li>
                                     <?php else: ?>
                                     <li><a href="<?php echo site_url("nav/myprofile/". encrypt_id($_SESSION['user_id'])); ?>">My Profile</a></li>
+                                    <li><a href="<?php echo site_url("nav/mydocuments/". encrypt_id($_SESSION['user_id'])); ?>">My Documents</a></li>
                                     <li><a href="<?php echo site_url('nav/mycitations/'. encrypt_id($_SESSION['user_id'])); ?>">Saved Citations</a></li>
                                     <li><a href="<?php echo site_url('nav/mybookmarks/'. encrypt_id($_SESSION['user_id'])); ?>">Bookmarked Documents</a></li>
                                     <li><a href="<?php echo site_url('nav/logout'); ?>">Log Out</a></li>
@@ -189,12 +191,6 @@ $db = new DBConnection();
                                 <h3><a href="<?php echo site_url('nav/research'); ?>">Generate References</a></h3>
                             </div>
                         </div>
-                        <!-- <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
-                            <div class="icon-box">
-                                <i class="ri-archive-line" style="color: #5578ff;"></i>
-                                <h3><a href="">Upload Your Own Study</a></h3>
-                            </div>
-                        </div> -->
                         <div class="col-lg-4 col-md-4 mt-4  mt-md-0">
                             <div class="icon-box">
                                 <i class="ri-bookmark-3-line" style="color: #11dbcf;"></i>
@@ -228,12 +224,7 @@ $db = new DBConnection();
                                         <div class="courses">
                                             <div class="col-lg-12 d-flex align-items-stretch">
                                                 <div class="course-item">
-                                                    <!-- <img src="assets/img/course-1.jpg" class="img-fluid" alt="..."> -->
                                                     <div class="course-content">
-                                                        <!-- <div class="d-flex justify-content-between align-items-center mb-3">
-                                                            <h4>Web Development</h4>
-                                                            <p class="price">$169</p>
-                                                        </div> -->
                                                         <h6><a href="<?php 
                                                             if(isset($_SESSION['user_id'])){
                                                             echo site_url('nav/preview/'.encrypt_id($doc['id']));
@@ -256,14 +247,9 @@ $db = new DBConnection();
                                                         </p>
                                                         <div class="trainer d-flex justify-content-between align-items-center">
                                                             <div class="trainer-profile d-flex align-items-center">
-                                                                <!-- <img src="assets/img/trainers/trainer-1.jpg" class="img-fluid" alt=""> -->
                                                                 <span><?php echo $doc['authors']; ?></span>
                                                             </div>
-                                                            <!-- <div class="trainer-rank d-flex align-items-center">
-                                                            <i class="bx bx-link"></i>&nbsp;50
-                                                            &nbsp;&nbsp;
-                                                            <i class="bx bx-bookmark"></i>&nbsp;65
-                                                            </div> -->
+                                                            <!-- </div> -->
                                                         </div>
                                                     </div> <!-- End course content -->
                                                 </div> <!-- End Course Item-->
@@ -367,9 +353,5 @@ $db = new DBConnection();
 
         <!-- Footer -->
         <?php include('default/footer.php'); ?>
-
-        
-
-        
     </body>
 </html>

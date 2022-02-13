@@ -1,7 +1,9 @@
 
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
 use \iamdual\Uploader;
+
 class Nav extends Controller {
 	public function __construct() {
 		parent::__construct();
@@ -88,6 +90,17 @@ class Nav extends Controller {
 		$this->call->view('archive/myprofile', $data);
 	}
 
+	public function mydocuments($id) {
+		$dec = decrypt_id($id);
+		$this->call->model('Docs_model');
+		$this->call->model('Drop_model');
+
+		$data['categories'] = $this->Drop_model->getCategories();
+		$data['docs'] = $this->Docs_model->getUserDocuments($dec);
+
+		$this->call->view('archive/mydocuments', $data);
+	}
+
 	public function mybookmarks($id) {
 		$dec = decrypt_id($id);
 		$this->call->model('Book_model');
@@ -107,8 +120,12 @@ class Nav extends Controller {
 	public function preview($id) {
 		$dec = decrypt_id($id);
 		$this->call->model('Docs_model');
+		$this->call->model('Cite_model');
 
-		$data = $this->Docs_model->getDocument($dec);
+		$data['preview'] = $this->Docs_model->getDocument($dec);
+		$data['related'] = $this->Docs_model->getDocuments();
+		$data['apa'] = $this->Cite_model->generateAPA($dec);
+		$data['mla'] = $this->Cite_model->generateMLA($dec);
 		$this->call->view('archive/preview-document', $data);
 	}
 
@@ -369,6 +386,54 @@ class Nav extends Controller {
 				}
 			}
 		}
+	}
+
+	public function user_document_insert() {
+		$this->call->model('Docs_model');
+
+		$id = decrypt_id($this->io->post('id'));
+		$title = $this->io->post('title');
+		$desc = $this->io->post('description');
+		$author = $this->io->post('authors');
+		$year = $this->io->post('year');
+		$publisher = $this->io->post('publisher');
+		$category = $this->io->post('category');
+		date_default_timezone_set('Asia/Manila');
+		$uploaded = date("Y-m-d h:i:sa");
+		$status = 1;
+		$updated = NULL;
+
+		$msg['status'] = false;
+
+		$directory = "documents/";
+		$filename = $_FILES['file']['name'];
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+		if($filename == "") {
+			$msg['msg'] = 'Please select a valid PDF file first!';
+			$msg['status'] = false;
+		}
+		if($ext != 'pdf') {
+			$msg['msg'] = 'Sorry, file is not a valid PDF file.';
+			$msg['status'] = false;
+		}
+		
+		if (file_exists($directory . $filename)) {
+			$msg['msg'] = 'Sorry, file already exists.';
+			$msg['status'] = false;
+		}else {
+			if (move_uploaded_file($_FILES['file']['tmp_name'], $directory . $filename)) {
+				if($this->Docs_model->insert_document($id, $title, $desc, $author, $year, $publisher, $status, $filename, $category, $uploaded, $updated)){
+					$msg['msg'] = 'Document added successfully! Wait for the admin to confirm it.';
+					$msg['status'] = true;
+				}
+			} else {
+				$msg['msg'] = 'Sorry, there was an error uploading your file.';
+				$msg['status'] = false;
+			}
+		}
+
+		echo json_encode($msg);
 	}
 	
 	public function update_document($id) {

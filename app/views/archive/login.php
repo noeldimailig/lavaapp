@@ -1,16 +1,3 @@
-<? /*
-
-  require_once('class/database.php');
-
-  $db = new database();
-  session_start();
-
-  if (!empty($_SESSION['email'])) {
-  header('location:index.php');
-  } */
-
-?>
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -28,9 +15,6 @@
       <div class="container d-flex align-items-center">
 
         <h1 class="logo me-auto"><a href="index.php">Elite Researcher</a></h1>
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
         <nav id="navbar" class="navbar order-last order-lg-0">
           <ul>
             <li><a href="<?php echo site_url('nav/index'); ?>">Home</a></li>
@@ -50,16 +34,13 @@
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
-
-        <!-- <a href="courses.html" class="get-started-btn">Get Started</a> -->
-
       </div>
     </header><!-- End Header -->
 
     <main id="main">
       <div class="main-body">
         <div class="image-box">
-          <img src="<?php echo BASE_URL . PUBLIC_DIR . '/img/login.png'; ?>" >
+          <img src="<?php echo BASE_URL . PUBLIC_DIR . '/assets/img/login.png'; ?>" >
         </div>
         <div class="login-form">
           <?php 
@@ -78,6 +59,10 @@
                 </div>
                 <div class="form-group">
                   <input type="submit" class="btn btn-lg btn-success btn-block form-control" value="Login" id="signin" name="signin">
+                </div>
+                <div class="mt-3 d-flex align-items-between justify-content-between">
+                  <a href="<?php echo site_url('user/forgot'); ?>">Forgot Password</a>
+                  <a href="<?php echo site_url('user/verify'); ?>">Verify Account</a>
                 </div>
               </form>
           </div>

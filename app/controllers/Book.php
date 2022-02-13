@@ -25,8 +25,6 @@ class Book extends Controller {
 		$did = $this->io->post('did');
 
         if($this->Book_model->delete($uid, $did) == true){
-            // $data['docs'] = $this->Book_model->mybookmarks($uid);
-            // $this->call->view('archive/mybookmarks', $data);
             echo "success";
         }
     }

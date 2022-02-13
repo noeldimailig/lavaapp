@@ -29,8 +29,10 @@ class User extends Controller {
 
 		$hash = $this->auth->passwordhash($password);
 
+		$code = mt_rand(11111, 99999);
+
 		if(password_verify($confirm, $hash) == true){
-			$this->auth->register($username, $password, $email);
+			$this->auth->register($username, $password, $email, $code);
 			$this->auth->set_logged_in($username);
 
 			$id = $this->User_model->get_last_id();
@@ -48,11 +50,56 @@ class User extends Controller {
 				'user_email' => $email
 			);
 			$this->session->set_userdata($userdata);
-			redirect('nav/index');
+			$this->send_code($email, $code);
+			redirect('user/verify');
 		}else {
 			$this->session->set_flashdata(array('error' => 'Password do not match!!'));
 			$this->call->view('archive/signup');
 		}
+	}
+
+	public function verify() {
+		$this->call->view('archive/verify');
+	}
+
+	public function verify_account() {
+		$this->call->model('User_model');
+
+		$email = $this->io->post('verify_email');
+		$code = $this->io->post('verify_code');
+
+		$result = $this->User_model->verify($email, $code);
+
+		if($result){
+			$userdata = array(
+				'user_id' => $result['id'],
+				'username' => $result['username'],
+				'firstname' => $result['firstname'],
+				'lastname' => $result['lastname'],
+				'campus' => $result['campus'],
+				'dep' => $result['dep'],
+				'program' => $result['program'],
+				'user_profile' => $result['profile'],
+				'user_role' => $result['role_id'],
+				'user_email' => $result['email'],
+			);
+
+			$this->session->set_userdata($userdata);
+			$this->auth->set_logged_in($result['username']);
+			redirect('nav/index');
+		}else {
+			$this->session->set_flashdata(array('verify' => 'Something went wrong. Please try again.'));
+			$this->call->view('archive/verify');
+		}
+	}
+
+	public function send_code($email, $code) {
+		$content = "You sign up in our website. Please verify your account in order to login!\nUse this code to verify your account." . $code;
+		$this->email->subject('Account Validation');
+		$this->email->sender('eliteresearcher2021@gmail.com');
+		$this->email->recipient($email);
+		$this->email->email_content($content);
+		$this->email->send();
 	}
 
 	public function signin() {
@@ -85,8 +132,32 @@ class User extends Controller {
 			}
 			
 		}else {
-			$this->session->set_flashdata(array('error' => 'Username or password do not match. Please try again.'));
+			$this->session->set_flashdata(array('error' => 'Username or password do not match. Please try again or try to verify your account.'));
 			$this->call->view('archive/login');
+		}
+	}
+
+	public function forgot(){
+		$this->call->view('archive/forgot');
+	}
+
+	public function forgot_password() {
+		$this->call->model('User_model');
+
+		$email = $this->io->post('forgot_email');
+		$pass = $this->io->post('forgot_pass');
+
+		$hash = $this->auth->passwordhash($pass);
+		$code = mt_rand(11111, 99999);
+
+		$result = $this->User_model->forgot($email, $hash, $code);
+
+		if($result){
+			$this->send_code($email, $code);
+			redirect('user/verify');
+		}else {
+			$this->session->set_flashdata(array('forgot' => 'Something went wrong. Please try again.'));
+			$this->call->view('archive/verify');
 		}
 	}
 

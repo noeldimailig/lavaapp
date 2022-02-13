@@ -9,7 +9,7 @@ class Cite extends Controller {
         $uid = $this->io->post('userid');
 		$did = $this->io->post('docid');
         $cited = $this->io->post('cited');
-        //$this->Cite_model->save($uid, $did, $cited);
+        
         $res = $this->Cite_model->checkCitation($uid, $did);
         if(($res == 0 && $cited == 0)  || ($res == 0 && $cited == 1)) {
             if($this->Cite_model->save($uid, $did, $cited)) {

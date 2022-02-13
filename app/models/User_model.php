@@ -8,7 +8,7 @@ class User_model extends Model{
     }
 
     public function get_last_id() {
-        $this->db->last_id();
+        return $this->db->last_id();
     }
 
     public function checksubs($uid, $email){
@@ -229,6 +229,54 @@ class User_model extends Model{
                         ->inner_join('roles as r', 'u.role_id=r.id')
                         ->where($condition)
                         ->get_all();
+    }
+
+    public function verify($email, $code) {
+        $condition = [
+            'u.email' => $email,
+            'u.validation_code' => $code
+        ];
+
+        $result = $this->db->table('users as u')
+                 ->select('u.id, u.username, u.firstname, u.lastname, u.profile, u.email, r.id as role_id, c.campus, d.dep, p.program')
+                 ->inner_join('campuses as c', 'u.campus_id=c.id')
+                 ->inner_join('departments as d', 'u.dep_id=d.id')
+                 ->inner_join('programs as p', 'u.program_id=p.id')
+                 ->inner_join('roles as r', 'u.role_id=r.id')
+                 ->where($condition)
+                 ->get();
+
+        $status = ['status' => 1];
+        if($result){
+            $verify = $this->db->table('users as u')->update($status)->where($condition)->exec();
+            if($verify)
+                return $result;
+            else
+                return false;    
+        }
+    }
+
+    public function forgot($email, $newpass, $code) {
+        $result = $this->db->table('users as u')
+            ->select('u.id, u.username, u.firstname, u.lastname, u.profile, u.email, r.id as role_id, c.campus, d.dep, p.program')
+            ->inner_join('campuses as c', 'u.campus_id=c.id')
+            ->inner_join('departments as d', 'u.dep_id=d.id')
+            ->inner_join('programs as p', 'u.program_id=p.id')
+            ->inner_join('roles as r', 'u.role_id=r.id')
+            ->where('u.email', $email)
+            ->get();
+        
+        $data = [
+            'validation_code' => $code,
+            'status' => 0
+        ];
+        if($result){
+            $verify = $this->db->table('users as u')->update($data)->where('u.email', $email)->exec();
+            if($verify)
+                return $result;
+            else
+                return false;    
+        }
     }
 }
 ?>

@@ -63,7 +63,7 @@
         </div>
         <div class="signup-form">
           <?php
-            echo $this->session->flashdata('error');
+            echo alert_error('error');
           ?>
           <div class="form-group col-8">
             <h1>Sign Up</h1>

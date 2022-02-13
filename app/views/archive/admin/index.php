@@ -392,7 +392,6 @@
                                         <th>Campus</th>
                                         <th>Department</th>
                                         <th>Program</th>
-                                        <th>Status</th>
                                     </tr>
                                 </thead>
                 
@@ -405,7 +404,6 @@
                                             <td><?php echo $result['campus']; ?></td>
                                             <td><?php echo $result['dep']; ?></td>
                                             <td><?php echo $result['program']; ?></td>
-                                            <td><p class="bg-success">Active</p></td>
                                         </tr>
                                      <?php endforeach ?>
                                         </tbody>

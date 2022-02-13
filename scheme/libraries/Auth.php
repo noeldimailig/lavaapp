@@ -71,12 +71,13 @@ class Auth {
 	 * @param  string $usertype   Usertype
 	 * @return $this
 	 */
-	public function register($username, $password, $email)
+	public function register($username, $password, $email, $code)
 	{
 		$bind = array(
 			'username' => $username,
 			'password' => $this->passwordhash($password),
 			'email' => $email,
+			'validation_code' => $code
 			);
 		return $this->LAVA->db->table('users')
 						->insert($bind)
@@ -91,12 +92,16 @@ class Auth {
 	 */
 	public function login($email, $password)
 	{
+		$condition = [
+			'u.email' => $email,
+			'u.status' => 1
+		];
     	$row = $this->LAVA->db->table('users as u')
 						->select('u.id, u.profile, u.firstname, u.lastname, u.username, u.role_id, u.email, c.campus, d.dep, p.program, u.password')
 						->inner_join('campuses as c', 'u.campus_id = c.id') 
 						->inner_join('departments as d', 'u.program_id = d.id')
 						->inner_join('programs as p', 'u.dep_id = p.id')					
-    					->where('u.email', $email)
+    					->where($condition)
     					->get();
 		if($row)
 		{

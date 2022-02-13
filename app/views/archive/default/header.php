@@ -14,7 +14,6 @@
 <?php echo load_css(array('assets/vendor/remixicon/remixicon')); ?>
 <?php echo load_css(array('assets/vendor/swiper/swiper-bundle.min')); ?>
 <?php echo load_css(array('assets/css/style')); ?>
-<?php //echo load_css(array('assets/css/login')); ?>
-<?php //echo load_css(array('assets/css/pdf_preview')); ?>
-<?php //echo load_css(array('assets/css/pdf_viewer')); ?>
-<?php include('path.php'); ?>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

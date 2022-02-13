@@ -122,7 +122,7 @@
 
             <nav aria-label="breadcrumb" class="mb-4">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?php echo site_url('nav/category'); ?>"><i class="fa fa-paste"></i> Manage File Category</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo site_url('nav/category'); ?>"><i class="fa fa-paste"></i> Manage Document Category</a></li>
                     <li class="breadcrumb-item"> Categories </li>
                 </ul>
             </nav>
@@ -130,46 +130,46 @@
 
             <div class="row d-flex flex-row px-3 mb-4">
                 <div class="col-3 p-0 mx-auto">
-                    <div class="card-header">Add File Category</div>
+                    <div class="card-header">Add Document Category</div>
                     <div class="card p-3 border-top-bottom-blue">
                         <form action="<?php echo site_url('nav/category_insert'); ?>" method="post" class="outer-form" id="add-category">
                             <div class="form-group">
-                                <label for="dept">File Category</label>
-                                <input type="text" class="form-control" name="category" id="category" placeholder="File Category">
+                                <label for="dept">Document Category</label>
+                                <input type="text" class="form-control" name="category" id="category" placeholder="Document Category">
                             </div>
                             <div class="form-group">
-                                <input type="submit" name="submit" id="submit" value="Add File Category" class="btn btn-sm btn-primary px-2 rounded">
+                                <input type="submit" name="submit" id="submit" value="Add Document Category" class="btn btn-sm btn-primary px-2 rounded">
                             </div>
                         </form>
                     </div>
                 </div>
 
                 <div class="col-3 p-0 mx-auto">
-                    <div class="card-header">Update File Category</div>
+                    <div class="card-header">Update Document Category</div>
                     <div class="card p-3 border-top-bottom-blue">
                         <form action="<?php echo site_url('nav/category_update'); ?>" method="post" class="outer-form" id="validate">
                             <input type="hidden" class="form-control" id="id" value="<?php echo $data['category']['id'];?>"  name="id">
                             <div class="form-group">
-                                <label for="dept">File Category</label>
-                                <input type="text" class="form-control" name="category" id="category" placeholder="File Category" value="<?php echo $data['category']['category'];?>">
+                                <label for="dept">Document Category</label>
+                                <input type="text" class="form-control" name="category" id="category" placeholder="Document Category" value="<?php echo $data['category']['category'];?>">
                             </div>
                             <div class="form-group">
-                                <input type="submit" name="update" id="update" value="Update File Category" class="btn btn-sm btn-warning px-2 rounded">
+                                <input type="submit" name="update" id="update" value="Update Document Category" class="btn btn-sm btn-warning px-2 rounded">
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="col-3 p-0 mx-auto">
-                    <div class="card-header">Delete File Category</div>
+                    <div class="card-header">Delete Document Category</div>
                     <div class="card p-3 border-top-bottom-blue">
                         <form action="<?php echo site_url('nav/category_delete'); ?>" method="post" class="outer-form" id="validate">
                             <input type="hidden" class="form-control" id="id" value="<?php echo $data['category']['id'];?>"  name="id">
                             <div class="form-group">
-                                <label for="dept">File Category</label>
-                                <input type="text" class="form-control" name="category" id="category" placeholder="File Category" value="<?php echo $data['category']['category'];?>">
+                                <label for="dept">Document Category</label>
+                                <input type="text" class="form-control" name="category" id="category" placeholder="Document Category" value="<?php echo $data['category']['category'];?>">
                             </div>
                             <div class="form-group">
-                                <input type="submit" name="delete" id="delete" value="Delete File Category" class="btn btn-sm btn-danger px-2 rounded">
+                                <input type="submit" name="delete" id="delete" value="Delete Document Category" class="btn btn-sm btn-danger px-2 rounded">
                             </div>
                         </form>
                     </div>
@@ -178,7 +178,7 @@
 
             <!-- title -->
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-0 pb-2 mb-3 border-bottom">
-                <h5 class="h3 color-darkgray mt-0 mb-0">File Category Lists</h5>
+                <h5 class="h3 color-darkgray mt-0 mb-0">Document Category Lists</h5>
             </div>
             <!-- end title -->
 
@@ -211,7 +211,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>File Category</th>
+                                        <th>Document Category</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

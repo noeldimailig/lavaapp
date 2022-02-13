@@ -50,10 +50,18 @@ class Docs_model extends Model {
 
     public function getDocuments(){
         return $this->db->table('documents as d')
-						->select('d.id, d.user_id, d.title, d.description, d.authors, s.state, d.filename, dc.category, f.file, d.updated_at')
+						->select('d.id, d.user_id, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category, f.file, d.updated_at')
 						->inner_join('states as s', 's.id = d.stat_id')
 						->inner_join('document_categories as dc', 'dc.id = d.doc_id')
-						->inner_join('file_categories as f', 'f.id = d.file_id')
+						->get_all();
+    }
+
+	public function getUserDocuments($id){
+        return $this->db->table('documents as d')
+						->select('d.id, d.user_id, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category, d.uploaded_at, d.updated_at')
+						->inner_join('states as s', 's.id = d.stat_id')
+						->inner_join('document_categories as dc', 'dc.id = d.doc_id')
+						->where('d.user_id', $id)
 						->get_all();
     }
 
@@ -90,8 +98,9 @@ class Docs_model extends Model {
 						->get();
     }
 
-	public function insert_document($title, $desc, $author, $year, $publisher, $status, $filename, $category, $file, $uploaded, $updated) {
+	public function insert_document($user_id, $title, $desc, $author, $year, $publisher, $status, $filename, $category, $uploaded, $updated) {
 		$data = [
+			'user_id' => $user_id,
 			'title' => $title,
 			'description' => $desc,
 			'authors' => $author,
@@ -100,7 +109,6 @@ class Docs_model extends Model {
 			'stat_id' => $status,
 			'filename' => $filename,
 			'doc_id' => $category,
-			'file_id' => $file,
 			'uploaded_at' => $uploaded,
 			'updated_at' => $updated
 		];
