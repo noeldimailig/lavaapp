@@ -125,7 +125,7 @@ $config['composer_autoload']        = TRUE;
 |
 */
 $config['enable_query_strings']     = FALSE;
-$config['permitted_uri_chars']		= 'a-z 0-9~%.:_\-';
+$config['permitted_uri_chars']		= 'a-z 0-9~%.:_\-@';
 
 /*
 |--------------------------------------------------------------------------

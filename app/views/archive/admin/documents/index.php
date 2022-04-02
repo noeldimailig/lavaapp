@@ -21,63 +21,32 @@
             <a href="<?php echo site_url('nav/dashboard'); ?>"><img src="<?php echo BASE_URL.PUBLIC_DIR.'/admin/img/logo.png'; ?>" height="auto" width="100%" alt=""></a>
             </div>
             <div class="side-slide-down pb-5">
-              
-            <ul class="nav flex-column">
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/dashboard'); ?>">
-                        <i class="icon fa fa-tachometer pr-1"></i>
-                        Dashboard
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/admin'); ?>">
-                        <i class="icon fa fa-user pr-1"></i>
-                        Manage Admins
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/user'); ?>">
-                        <i class="icon fa fa-users pr-1"></i>
-                        Manage Users
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="<?php echo site_url('nav/document'); ?>">
-                        <i class="icon fa fa-archive pr-1"></i>
-                        Manage Document
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/campus'); ?>">
-                        <i class="icon fa fa-home pr-1"></i>
-                        Manage Campus
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/department'); ?>">
-                        <i class="icon fa fa-list-ul pr-1"></i>
-                        Manage Department
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/program'); ?>">
-                        <i class="icon fa fa-graduation-cap pr-1"></i>
-                        Manage Programs
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/category'); ?>">
-                        <i class="icon fa fa-book pr-1"></i>
-                        Manage Document Category
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/file'); ?>">
-                        <i class="icon fa fa-paste pr-1"></i>
-                        Manage File Category
-                    </a>
-                  </li>
-              </ul>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="<?php echo site_url('nav/document'); ?>">
+                            <i class="icon fa fa-tachometer pr-1"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo site_url('nav/manage'); ?>">
+                            <i class="icon fa fa-file pr-1"></i>
+                            Manage Active Documents
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo site_url('nav/pending'); ?>">
+                            <i class="icon fa fa-spinner pr-1"></i>
+                            Manage Pending Documents
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo site_url('nav/archive'); ?>">
+                            <i class="icon fa fa-archive pr-1"></i>
+                            Manage Archive Documents
+                        </a>
+                    </li>
+                </ul>
             </div>
         </nav>
         <!-- end side bar -->
@@ -115,110 +84,168 @@
             <div class="navbar-toggler d-md-none sidebar-toggle px-3 bg-dark text-left" >
                 <a href="#" data-toggle="collapse" data-target="#sidebarToggler" aria-controls="sidebarToggler" aria-expanded="false" aria-label="Toggle navigation" class="togs"> <i class="fa fa-bars"></i> Menu</a>
             </div>
-            
         </nav>
         <main role="main" class="main col-md-9 ml-sm-auto col-lg-10 px-md-4">
-
-            <nav aria-label="breadcrumb" class="mb-4">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?php echo site_url('nav/document'); ?>"><i class="fa fa-file"></i> Manage Documents</a></li>
-                    <li class="breadcrumb-item"> Document Lists </li>
-                </ul>
-            </nav>
-            <!-- End BreadCrumb -->
-
-            <!-- title -->
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-0 pb-2 mb-3 border-bottom">
-                <h5 class="h3 color-darkgray mt-0 mb-0">Document Lists</h5>
-            </div>
-            <!-- end title -->
-
 
             <!-- container-fluid -->
             <div class="container-fluid">
                 <!-- row -->
                 <div class="row pb-3">
+                    <!-- col-12 -->
+                    <div class="col-12 p-0 m-0 mt-5 mb-3">
+                        <!-- Card Deck -->
+                        <div class="card-deck">
 
-                    <!-- Col-12 -->
-                    <div class="col-12 p-0 mt-2">
-                    <!-- card -->
-                    <div class="card border-top-bottom-blue">  <!-- <div class="card text-white bg-dark"> -->
-                        <!-- card header -->
-                        <div class="card-header p-0">
-                            <div class="card-icon">
-                                <i class="fa fa-th"></i>
+                        <!-- card -->
+                        <div class="card stat-panel"> 
+                            <div class="text-white bg-secondary stat">
+                                <h3 class="pl-2">
+                                    <strong>
+                                    <?php foreach($data['research'] as $research){
+                                    echo $research;
+                                } ?>
+                                    </strong>
+                                </h3>
+                                <span class="stat-icon"><i class="fa fa-file"></i></span>
+                                <div class="pl-2">
+                                    <p>Researches</p>
+                                </div>
+                                <div class="stat-footer">
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
+                                </div>
                             </div>
-                            <div class="card-label">Lists <a href="<?php echo site_url('nav/insert_document'); ?>" class="btn btn-sm btn-primary p-0 rounded" role="button">Add New</a></div> 
                         </div>
-                        <!-- End card header -->
-                        <!-- Card Body -->
-                        <div class="card-body p-0">
-                        <!-- Table Div -->
-                        <div class="table-responsive">
+                        <!-- End card -->
 
-                            <!-- Table -->
-                            <table id="documents" class="table table-hover table-sm mb-0">
-                            
-                             <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Title</th>
-                                                <th>Description</th>
-                                                <th>Authors</th>
-                                                <th>File Name</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                
-                                        <tbody>
-                                            <?php foreach ($data['docs'] as $result) : ?>
-                                                <tr>
-                                                    <td><?php echo $result['id']; ?></td>
-                                                    <td><?php echo $result['title']; ?></td>
-                                                    <td><?php
-                                                      $sub_desc = "" ;
-                                                      $desc_length = strip_tags($result['description']);
-                                                      if(strlen($desc_length) > 500){
-                                                        $shorten = substr($desc_length, 0, 100);
-                                                        $sub_desc = substr($shorten, 0, strrpos($shorten, ' ')).'...';
-                                                        echo $sub_desc;
-                                                      }  
-                                                      else echo $sub_desc; ?>      
-                                                    </td>
-                                                    <td><?php echo $result['authors']; ?></td>
-                                                    <td><a href="<?php echo site_url('nav/preview_document/'.encrypt_id($result['id'])); ?>"><?php echo $result['filename']; ?></a></td>
-                                                    <td>
-                                                      <a class="btn btn-sm btn-primary px-2 rounded" role="button" href="<?php echo site_url('nav/update_document/'.encrypt_id($result['id']));?>">Update</a>
-                                                      <a class="btn btn-sm btn-danger px-2 rounded" role="button" href="<?php echo site_url('nav/delete_document/'.encrypt_id($result['id']));?>">Delete</a>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach ?>
-                                            
-                                            </tr>
-                                        </tbody>
-                
-                                        <tfoot>
-                                        <tr></tr>
-                                        </tfoot>
-                                    </table>
-                                    <!-- End Table -->
-
+                        <!-- card -->
+                        <div class="card stat-panel"> 
+                            <div class="text-white bg-warning stat">
+                                <h3 class="pl-2">
+                                    <strong>
+                                    <?php foreach($data['thesis'] as $thesis){
+                                    echo $thesis;
+                                } ?>
+                                    </strong>
+                                </h3>
+                                <span class="stat-icon"><i class="fa fa-file"></i></span>
+                                <div class="pl-2">
+                                    <p>Thesis</p>
+                                </div>
+                                <div class="stat-footer">
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
+                                </div>
+                            </div>
                         </div>
-                        <!-- End Table Div -->
+                        <!-- End card -->
 
+                        <!-- card -->
+                        <div class="card stat-panel"> 
+                            <div class="text-white bg-success stat">
+                                <h3 class="pl-2">
+                                    <strong>
+                                    <?php foreach($data['dissertation'] as $dissert){
+                                    echo $dissert;
+                                } ?>    
+                                    </strong>
+                                </h3>
+                                <span class="stat-icon"><i class="fa fa-file"></i></span>
+                                <div class="pl-2">
+                                    <p>Disertations</p>
+                                </div>
+                                <div class="stat-footer">
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
+                                </div>
+                            </div>
                         </div>
-                        <!-- End Card Body -->
+                        <!-- End card -->
+
+                        <!-- card -->
+                        <div class="card stat-panel"> 
+                            <div class="text-white bg-danger stat">
+                                <h3 class="pl-2">
+                                    <strong>
+                                    <?php foreach($data['capstone'] as $capstone){
+                                    echo $capstone;
+                                } ?></strong>
+                                </h3>
+                                <span class="stat-icon"><i class="fa fa-file"></i></span>
+                                <div class="pl-2">
+                                    <p>Capstones</p>
+                                </div>
+                                <div class="stat-footer">
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End card -->
+                        <!-- card -->
+                        <div class="card stat-panel"> 
+                            <div class="text-white bg-info stat">
+                                <h3 class="pl-2">
+                                    <strong>
+                                    <?php foreach($data['pending'] as $pending){
+                                    echo $pending;
+                                } ?>
+                                    </strong>
+                                </h3>
+                                <span class="stat-icon"><i class="fa fa-spinner"></i></span>
+                                <div class="pl-2">
+                                    <p>Pending</p>
+                                </div>
+                                <div class="stat-footer">
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End card -->
+                        <!-- card -->
+                        <div class="card stat-panel"> 
+                            <div class="text-white bg-dark stat">
+                                <h3 class="pl-2">
+                                    <strong>
+                                    <?php foreach($data['archive'] as $archive){
+                                    echo $archive;
+                                } ?>
+                                    </strong>
+                                </h3>
+                                <span class="stat-icon"><i class="fa fa-archive"></i></span>
+                                <div class="pl-2">
+                                    <p>Archive</p>
+                                </div>
+                                <div class="stat-footer">
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End card -->
+                        <!-- card -->
+                        <div class="card stat-panel"> 
+                            <div class="text-white bg-success stat">
+                                <h3 class="pl-2">
+                                    <strong>
+                                    <?php foreach($data['active'] as $active){
+                                    echo $active;
+                                } ?>
+                                    </strong>
+                                </h3>
+                                <span class="stat-icon"><i class="fa fa-file"></i></span>
+                                <div class="pl-2">
+                                    <p>Active</p>
+                                </div>
+                                <div class="stat-footer">
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End card -->
+                        </div>
+                        <!-- End Card Deck -->
                     </div>
-                    <!-- End card -->
-                    </div>
-                    <!-- End Col-12 -->
-
-
+                    <!-- end col-12 -->
                 </div>
                 <!-- End Row -->
             </div>
             <!-- End container-fluid -->
-            <!-- Footer -->
             <footer class="footer mt-auto px-5 py-2 bg-white border-top footer" >
                 <div class="container d-flex flex-row align-items-start justify-content-center">
                     <span class="text-muted"> &copy; 2021 | </span> <p class="ml-2">Dimailig | Pine | Cabello</p>

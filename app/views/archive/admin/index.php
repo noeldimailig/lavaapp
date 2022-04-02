@@ -54,39 +54,9 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/document'); ?>">
-                        <i class="icon fa fa-archive pr-1"></i>
-                        Manage Document
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/campus'); ?>">
-                        <i class="icon fa fa-home pr-1"></i>
-                        Manage Campus
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/department'); ?>">
-                        <i class="icon fa fa-list-ul pr-1"></i>
-                        Manage Department
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/program'); ?>">
-                        <i class="icon fa fa-graduation-cap pr-1"></i>
-                        Manage Programs
-                    </a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link" href="<?php echo site_url('nav/category'); ?>">
                         <i class="icon fa fa-book pr-1"></i>
-                        Manage Document Category
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('nav/file'); ?>">
-                        <i class="icon fa fa-paste pr-1"></i>
-                        Manage File Category
+                        Manage Category
                     </a>
                   </li>
               </ul>
@@ -175,10 +145,10 @@
                                 } ?></strong></h3>
                                 <span class="stat-icon"><i class="fa fa-users"></i></span>
                                 <div class="pl-2">
-                                    <p>Administrators</p>
+                                    <p>Documents Admin</p>
                                 </div>
                                 <div class="stat-footer">
-                                    <a href="<?php echo site_url('nav/admin'); ?>" class="stat-footer-link">More info <i class="fa fa-arrow-right"></i></a>
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -195,7 +165,7 @@
                                     <p>Users</p>
                                 </div>
                                 <div class="stat-footer">
-                                    <a href="<?php echo site_url('nav/user'); ?>" class="stat-footer-link">More info <i class="fa fa-arrow-right"></i></a>
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -216,7 +186,7 @@
                                     <p>Researches</p>
                                 </div>
                                 <div class="stat-footer">
-                                    <a href="<?php echo site_url('nav/document'); ?>" class="stat-footer-link">More info <i class="fa fa-arrow-right"></i></a>
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -237,7 +207,7 @@
                                     <p>Thesis</p>
                                 </div>
                                 <div class="stat-footer">
-                                    <a href="<?php echo site_url('nav/document'); ?>" class="stat-footer-link">More info <i class="fa fa-arrow-right"></i></a>
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -258,7 +228,7 @@
                                     <p>Disertations</p>
                                 </div>
                                 <div class="stat-footer">
-                                    <a href="<?php echo site_url('nav/document'); ?>" class="stat-footer-link">More info <i class="fa fa-arrow-right"></i></a>
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -278,7 +248,7 @@
                                     <p>Capstones</p>
                                 </div>
                                 <div class="stat-footer">
-                                    <a href="<?php echo site_url('nav/document'); ?>" class="stat-footer-link">More info <i class="fa fa-arrow-right"></i></a>
+                                    <p class="stat-footer">As of <?= date("Y-m-d"); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -310,7 +280,7 @@
                                 </div>
                                 <!-- End card header -->
                                 <!-- Card Body -->
-                                <div class="card-body p-0">
+                                <div class="card-body p-4">
 
                                     <!-- Table Div -->
                         <div class="table-responsive">
@@ -324,9 +294,7 @@
                                                 <th>Username</th>
                                                 <th>Email</th>
                                                 <th>Role</th>
-                                                <th>Campus</th>
-                                                <th>Department</th>
-                                                <th>Action</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                 
@@ -337,12 +305,7 @@
                                                     <td><?php echo $result['username']; ?></td>
                                                     <td><?php echo $result['email']; ?></td>
                                                     <td><?php echo $result['role']; ?></td>
-                                                    <td><?php echo $result['campus']; ?></td>
-                                                    <td><?php echo $result['dep']; ?></td>
-                                                    <td>
-                                                        <a class="btn btn-sm btn-primary px-2 rounded" role="button" href="<?php echo site_url('nav/update_admin/'.encrypt_id($result['id'])); ?>">Update</a>&nbsp;
-                                                        <a class="btn btn-sm btn-danger px-2 rounded" role="button" href="<?php echo site_url('nav/delete_admin/'.encrypt_id($result['id'])); ?>">Delete</a>
-                                                    </td>
+                                                    <td><?php echo '<p class="text-success">Active</p>';?></td>
                                                 </tr>
                                             <?php endforeach ?>
                                         </tbody>
@@ -377,7 +340,7 @@
                                 </div>
                                 <!-- End card header -->             
                                 <!-- Card Body -->
-                                <div class="card-body p-0">
+                                <div class="card-body p-4">
                         <!-- Table Div -->
                         <div class="table-responsive">
 
@@ -389,9 +352,7 @@
                                         <th>ID</th>
                                         <th>Full Name</th>
                                         <th>Email</th>
-                                        <th>Campus</th>
-                                        <th>Department</th>
-                                        <th>Program</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                 
@@ -401,9 +362,7 @@
                                             <td><?php echo $result['id']; ?></td>
                                             <td><?php echo $result['username']; ?></td>
                                             <td><?php echo $result['email']; ?></td>
-                                            <td><?php echo $result['campus']; ?></td>
-                                            <td><?php echo $result['dep']; ?></td>
-                                            <td><?php echo $result['program']; ?></td>
+                                            <td><?php echo '<p class="text-success">Active</p>';?></td>
                                         </tr>
                                      <?php endforeach ?>
                                         </tbody>

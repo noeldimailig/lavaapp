@@ -1,9 +1,4 @@
-<?php
-  include('class/DBConnection.php');
-  $db = new DBConnection();
-
-  $modal_id = [];
-?>
+<?php $modal_id = []; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,9 +26,6 @@
   <header id="header" class="fixed-top">
       <div class="container d-flex align-items-center">
           <h1 class="logo me-auto"><a href="<?php echo site_url('nav/index'); ?>">Elite Researcher</a></h1>
-          <!-- Uncomment below if you prefer to use an image logo -->
-          <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
           <nav id="navbar" class="navbar order-last order-lg-0">
               <ul>
                   <li><a href="<?php echo site_url('nav/index'); ?>">Home</a></li>
@@ -126,7 +118,9 @@
                           </div>
                          
                           <div class="d-flex flex-row justify-content-between align-items-between border-top" id="options">
-                            <p class="mt-1"><?php echo $db->countDocCitations($doc['id']); ?> cite(s)</p>
+                            <div class="d-flex align-items-start justify-content-start">
+                              <p class="mt-1" id="count_id<?= $doc['id']; ?>"></p> <span class="mt-1" style="margin-left: 10px;">cite(s)</span>
+                            </div>  
                             <div class="mt-2 d-flex flex-row justify-content-between align-items-between">
                               <p id="message<?= $doc['id']; ?>" class="text-secondary mr-3"></p>
                               <a href="<?php 
@@ -218,24 +212,10 @@
             }
           });
         });
+
+        $('#count_id<?= $id; ?>').load("<?php echo site_url('nav/count_citations/'. encrypt_id($id)); ?>");
       </script>
     <?php endforeach ?>
-
-  <script>
-    $('search-form').submit(function(e) {
-      e.preventDefault();
-      var form = $(this);
-      var url = form.attr('action');
-      $.ajax({
-        url: url,
-        type: 'POST',
-        data: form.serialize(),
-        success: function(response) {
-          $('#search').val("");
-        }
-      });
-    });
-  </script>
 </body>
 
 </html>

@@ -1,9 +1,4 @@
-<?php
-  require_once('class/DBConnection.php');
-
-  $db = new DBConnection();
-  $modal_id = [];
-?>
+<?php $modal_id = []; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -122,7 +117,8 @@
                               <p><a href="<?php echo site_url('nav/preview/'.encrypt_id($cite['id'])); ?>"><?= $cite['title']; ?></a></p>
                             </div>
                           </div>
-                        <p><?php echo $db->generateCitation($cite['id']); ?></p>
+                          <p class="mt-1" id="cite_apa_id<?php echo $cite['id']; ?>"></p>
+                          <p class="mt-1" id="cite_mla_id<?php echo $cite['id']; ?>"></p>
                       </div>
                       <div id="options">
                         <form id="deleteform<?= $cite['id']; ?>" action="<?php echo site_url('cite/delete'); ?>" method="post" class="d-flex flex-row justify-content-between align-items-center p-0 m-0">
@@ -170,6 +166,9 @@
             }
           });
         });
+
+        $('#cite_apa_id<?= $id; ?>').load("<?php echo site_url('nav/get_apa_citations/'. encrypt_id($id)); ?>");
+        $('#cite_mla_id<?= $id; ?>').load("<?php echo site_url('nav/get_mla_citations/'. encrypt_id($id)); ?>");
       </script>
     <?php endforeach ?>
 </body>

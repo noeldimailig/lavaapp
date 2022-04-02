@@ -1,21 +1,3 @@
-<?php /*
-  require_once('path.php');
-  require_once('phpmailer/PHPMailer.php');
-  require_once('phpmailer/SMTP.php');
-  require_once('phpmailer/Exception.php');*/
-  include('class/DBConnection.php');
-
-  $db = new DBConnection();
-  /*session_start();
-
-  if (!empty($_SESSION['email'])) {
-   $result = $db->getProfile($_SESSION['id']);
-  }
-  $data = $db->getDocument();*/
-  $datas = $db->getDocuments();
-
-?>
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -133,7 +115,7 @@
                     <li class="d-flex flex-row justify-content-between align-items-center"><div><i class="bi bi-check-circle"></i> View the full document?</div> <a href="<?php echo site_url('nav/fullview/'.encrypt_id($data['preview']['id'])); ?>">Click here</a></li>
                     <li class="d-flex flex-row justify-content-between align-items-center">
                       <div><i class="bi bi-check-circle"></i> Cite document?</div> 
-                      <button id="cite" name="cite" type="submit" data-toggle="modal" data-target="#exampleModalCenter">Cite</button>
+                      <button id="cite" name="cite" type="submit" data-bs-toggle="modal" data-bs-target="#modal-cite">Cite</button>
                     </li>
                     <li class="d-flex flex-row justify-content-between align-items-center"><div><i class="bi bi-check-circle"></i> <p id="bookmarks" class="d-inline-block"> Bookmark document?</p></div>
                       <form id="savebook" action="<?php echo site_url('book/save'); ?>" method="post" class="d-flex flex-row justify-content-center align-items-center p-0 m-0">
@@ -161,14 +143,12 @@
       </div>
     </main>
   <!-- Modal -->
-  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal fade" id="modal-cite" tabindex="-1" role="dialog" aria-labelledby="modal-cite" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Cite this document?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span class="border-0" aria-hidden="true">&times;</span>
-            </button>
+            <h5 class="modal-title" id="modal-cite">Cite this document?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <p id="citation">
@@ -179,7 +159,6 @@
             </p>
           </div>
           <div class="modal-footer d-flex flex-row align-items-center justify-content-between">
-            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
             <button type="button" class="btn btn-secondary" onclick="copyText('citation');">Copy</button>
             <p id="message" class="text-success">Citation copied.</p>
             <form action="<?php echo site_url('cite/save'); ?>" method="post" id="saveform">
@@ -195,18 +174,10 @@
     </div>
     <!-- ======= Footer ======= -->
     <?php include('default/footer.php'); ?>
-
-    <!-- Vendor JS Files -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <?php echo load_js(array('assets/js/pdf')); ?>
     <?php echo load_js(array('assets/js/pdf.worker')); ?>
     <?php echo load_js(array('assets/js/preview')); ?>
     <?php echo load_js(array('assets/js/preventSS')); ?>
-        
-
     <script>
       $('#message').hide();
       function copyText(id) {

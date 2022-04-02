@@ -18,8 +18,6 @@ $db = new DBConnection();
         <header id="header" class="fixed-top">
             <div class="container d-flex align-items-center">
                 <h1 class="logo me-auto"><a href="<?php echo site_url('nav/index'); ?>">Elite Researcher</a></h1>
-                <!-- Uncomment below if you prefer to use an image logo -->
-                <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
                 <nav id="navbar" class="navbar order-last order-lg-0">
                     <ul>
@@ -61,6 +59,7 @@ $db = new DBConnection();
                         </li>
                     </ul>
                 <?php endif ?>
+                <i class="bi bi-list mobile-nav-toggle"></i>
                 </nav><!-- .navbar -->
                 <?php if(!isset($_SESSION['user_email'])) : ?>
                 <a href="<?php echo site_url('nav/login'); ?>" class="get-started-btn">Get Started</a>
@@ -91,13 +90,12 @@ $db = new DBConnection();
                 <div class="container" data-aos="fade-up">
                     <div class="row">
                         <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
-                            <img src="<?php echo BASE_URL . PUBLIC_DIR.'/img/about.jpg'; ?>" class="img-fluid" alt="">
+                            <img src="<?php echo BASE_URL . PUBLIC_DIR.'/assets/img/about.jpg'; ?>" class="img-fluid" alt="">
                         </div>
                         <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
                             <h3>Elite Researcher: An Archive for Mindoro State University Research, Thesis, and Dissertation</h3>
                             <p class="fst-italic">
                                 Just two years ago, everything seems to be alright. We are fine doing what we usually do until the pandemic caused by Covid-19 hits us all.
-                                <!-- At the blink of an eye everything we used to do suddenly changed, several restrictions are issued to prevent further spreading of the virus. -->
                                 Classes are now done remotely either online or via modular learning. Gathering resources became hard for those students who has research subjects like us due to non availability of physical libraries. With this, we became eager to developed an online archive for our institution that will cater all viable resources available during face-to-face classes. The developers aims:
                             </p>
                             <ul>

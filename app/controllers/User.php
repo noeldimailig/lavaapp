@@ -3,7 +3,6 @@
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 use \iamdual\Uploader;
-
 class User extends Controller {
 	public function __construct() {
 		parent::__construct();
@@ -11,21 +10,13 @@ class User extends Controller {
 		$this->call->helper(array('alert'));
 	}
 
-	public function login() {
-		$this->call->view('archive/login');
-	}
-
-	public function signup() {
-		$this->call->view('archive/signup');
-	}
-
 	public function register() {
 		$this->call->model('User_model');
 
-		$username = $this->io->post('name');
-		$password = $this->io->post('password');
-		$confirm = $this->io->post('confirm');
-		$email = $this->io->post('email');
+		$username = $this->io->post('sname');
+		$password = $this->io->post('spassword');
+		$confirm = $this->io->post('sconfirm');
+		$email = $this->io->post('semail');
 
 		$hash = $this->auth->passwordhash($password);
 
@@ -40,11 +31,8 @@ class User extends Controller {
 			$userdata = array(
 				'user_id' => $id,
 				'username' => $username,
-				'campus' => 'NONE',
-				'dep' => 'NONE',
 				'firstname' => 'NONE',
 				'lastname' => 'NONE',
-				'program' => 'NONE',
 				'user_profile' => 'profile.png',
 				'user_role' => 'user',
 				'user_email' => $email
@@ -53,8 +41,8 @@ class User extends Controller {
 			$this->send_code($email, $code);
 			redirect('user/verify');
 		}else {
-			$this->session->set_flashdata(array('error' => 'Password do not match!!'));
-			$this->call->view('archive/signup');
+			$this->session->set_flashdata(array('signup_error' => 'Password do not match!!'));
+			redirect('nav/signup');
 		}
 	}
 
@@ -76,9 +64,6 @@ class User extends Controller {
 				'username' => $result['username'],
 				'firstname' => $result['firstname'],
 				'lastname' => $result['lastname'],
-				'campus' => $result['campus'],
-				'dep' => $result['dep'],
-				'program' => $result['program'],
 				'user_profile' => $result['profile'],
 				'user_role' => $result['role_id'],
 				'user_email' => $result['email'],
@@ -86,10 +71,13 @@ class User extends Controller {
 
 			$this->session->set_userdata($userdata);
 			$this->auth->set_logged_in($result['username']);
-			redirect('nav/index');
+			$msg['msg'] = "Verification successful, please proceed to logging your account.";
+			$msg['error'] = false;
+			echo json_encode($msg);
 		}else {
-			$this->session->set_flashdata(array('verify' => 'Something went wrong. Please try again.'));
-			$this->call->view('archive/verify');
+			$msg['msg'] = "Something went wrong, please try to check the email or code you entered.";
+			$msg['error'] = true;
+			echo json_encode($msg);
 		}
 	}
 
@@ -114,26 +102,31 @@ class User extends Controller {
 				'username' => $result['username'],
 				'firstname' => $result['firstname'],
 				'lastname' => $result['lastname'],
-				'campus' => $result['campus'],
-				'dep' => $result['dep'],
-				'program' => $result['program'],
 				'user_profile' => $result['profile'],
 				'user_role' => $result['role_id'],
 				'user_email' => $result['email'],
 			);
-			if($result['role_id'] == 2 || $result['role_id'] == 3){
+
+			$role = $result['role_id'];
+			if($role == 2 || $role == 3){
 				$this->session->set_userdata($userdata);
-				$this->auth->set_logged_in($result['username']);
-				redirect('nav/dashboard');
+				$msg['msg'] = "Logging your account.";
+				$msg['error'] = false;
+				$msg['role'] = $role;
+				echo json_encode($msg);
 			}else {
 				$this->session->set_userdata($userdata);
 				$this->auth->set_logged_in($result['username']);
-				redirect('nav/index');
+				$msg['msg'] = "Logging your account.";
+				$msg['error'] = false;
+				$msg['role'] = $role;
+				echo json_encode($msg);
 			}
 			
 		}else {
-			$this->session->set_flashdata(array('error' => 'Username or password do not match. Please try again or try to verify your account.'));
-			$this->call->view('archive/login');
+			$msg['msg'] = "Something went wrong, please try to check the email or password you entered.";
+			$msg['error'] = true;
+			echo json_encode($msg);
 		}
 	}
 
@@ -154,10 +147,13 @@ class User extends Controller {
 
 		if($result){
 			$this->send_code($email, $code);
-			redirect('user/verify');
-		}else {
-			$this->session->set_flashdata(array('forgot' => 'Something went wrong. Please try again.'));
-			$this->call->view('archive/verify');
+			$msg['msg'] = "Password successfully changed, please proceed to verifying your account.";
+			$msg['error'] = false;
+			echo json_encode($msg);
+		} else {
+			$msg['msg'] = "Something went wrong, please try to check the email you entered.";
+			$msg['error'] = true;
+			echo json_encode($msg);
 		}
 	}
 
@@ -169,9 +165,6 @@ class User extends Controller {
 		$uname = $this->io->post('uname');
 		$fname = $this->io->post('fname');
 		$lname = $this->io->post('lname');
-		$program = $this->io->post('program');
-		$campus = $this->io->post('campus');
-		$dep = $this->io->post('department');
 		$prev = $this->io->post('prev_filename');
 
 		if (isset($_FILES["file"])) {
@@ -187,18 +180,15 @@ class User extends Controller {
 					'username' => $uname,
 					'firstname' => $fname,
 					'lastname' => $lname,
-					'campus' => $campus,
-					'dep' => $dep,
-					'program' => $program,
 					'user_email' => $email
 				);
 	
-				if($this->User_model->update($id, $uname, $fname, $lname, $email, $program, $campus, $dep)){
+				if($this->User_model->update($id, $uname, $fname, $lname, $email)){
 					$this->session->unset_userdata($userdata);
 					$this->session->set_userdata($userdata);
-					$this->session->set_flashdata(array('success' => 'Profile update successful!'));
-
-					redirect('nav/myprofile');
+					$msg['msg'] = "Profile details updated successfully.";
+					$msg['error'] = false;
+					echo json_encode($msg);
 				}
 			} else {
 				$profile = $upload->get_name();
@@ -206,18 +196,18 @@ class User extends Controller {
 					'username' => $uname,
 					'firstname' => $fname,
 					'lastname' => $lname,
-					'campus' => $campus,
-					'dep' => $dep,
-					'program' => $program,
 					'user_email' => $email,
 					'user_profile' => $profile
 				);
-				if($this->User_model->profile_update($id, $profile, $uname, $fname, $lname, $email, $program, $campus, $dep)){
-					$this->session->unset_userdata($userdata);
-					$this->session->set_userdata($userdata);
-					$this->session->set_flashdata(array('success' => 'Profile updated successfully!'));
-
-					redirect('nav/myprofile');
+				if($this->User_model->profile_update($id, $profile, $uname, $fname, $lname, $email)){
+					if(file_exists("profile_pictures/" . $profile)){
+						unlink("profile_pictures/".$prev);
+						$this->session->unset_userdata($userdata);
+						$this->session->set_userdata($userdata);
+						$msg['msg'] = "Profile details updated successfully.";
+						$msg['error'] = false;
+						echo json_encode($msg);
+					}
 				}
 			}
 		}

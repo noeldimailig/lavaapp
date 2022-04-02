@@ -97,10 +97,7 @@ class Auth {
 			'u.status' => 1
 		];
     	$row = $this->LAVA->db->table('users as u')
-						->select('u.id, u.profile, u.firstname, u.lastname, u.username, u.role_id, u.email, c.campus, d.dep, p.program, u.password')
-						->inner_join('campuses as c', 'u.campus_id = c.id') 
-						->inner_join('departments as d', 'u.program_id = d.id')
-						->inner_join('programs as p', 'u.dep_id = p.id')					
+						->select('u.id, u.profile, u.firstname, u.lastname, u.username, u.role_id, u.email, u.password')					
     					->where($condition)
     					->get();
 		if($row)

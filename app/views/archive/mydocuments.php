@@ -126,7 +126,7 @@
             <?php foreach ($data['docs'] as $doc) : ?>
               <tr>
                 <td style="display: none;" class="t_id"><?php echo $doc['id']; ?></td>
-                <td class="t_title"><a href="<?php echo site_url('nav/preview/'. encrypt_id($doc['id'])); ?>"><?php echo $doc['title']; ?></a></td>
+                <td class="t_title"><a href="<?php if($doc['state'] != "Pending") echo site_url('nav/preview/'. encrypt_id($doc['id'])); ?>"><?php echo $doc['title']; ?></a></td>
                 <td class="t_author"><?php echo $doc['authors']; ?></td>
                 <td style="display: none;" class="t_desc"><?php echo $doc['description']; ?></td>
                 <td style="display: none;" class="t_year"><?php echo $doc['pub_year']; ?></td>
@@ -161,6 +161,8 @@
           <div class="modal-body">
             <div id="message"></div>
             <input type="hidden" class="form-control" name="id" id="id" value="<?php echo encrypt_id($_SESSION['user_id']); ?>">
+            <input type="hidden" class="form-control" name="email" id="email" value="<?php echo $_SESSION['user_email']; ?>">
+            <input type="hidden" class="form-control" name="name" id="name" value="<?php echo $_SESSION['username']; ?>">
             <div class="form-group">
               <label for="title">Title</label>
               <input type="text" class="form-control" name="title" id="title" placeholder="Title">
@@ -208,7 +210,7 @@
   <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="update" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
-        <form action="<?php echo site_url('nav/user_document_insert'); ?>" method="post" id="updateDoc" enctype="multipart/form-data">
+        <form action="<?php echo site_url('nav/document_update'); ?>" method="post" id="updateDoc" enctype="multipart/form-data">
           <div class="modal-header">
             <h5 class="modal-title" id="update">Update Document</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -216,6 +218,10 @@
           <div class="modal-body">
             <div id="u-message"></div>
             <input type="hidden" class="form-control" name="u_did" id="u_did">
+            <input type="hidden" class="form-control" name="u_filename" id="u_filename">
+            <input type="hidden" class="form-control" name="u_email" id="u_email" value="<?php echo $_SESSION['user_email']; ?>">
+            <input type="hidden" class="form-control" name="u_name" id="u_name" value="<?php echo $_SESSION['username']; ?>">
+            <input type="hidden" class="form-control" name="u_role" id="u_role" value="<?php echo $_SESSION['user_role']; ?>">
             <div class="form-group">
               <label for="title">Title</label>
               <input type="text" class="form-control" name="u_title" id="u_title" placeholder="Title">
@@ -252,7 +258,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-success" name="u_submit" id="u_submit">Save</button>
+            <button type="submit" class="btn btn-success" name="u_submit" id="u_submit">Update</button>
           </div> 
         </form>
       </div>

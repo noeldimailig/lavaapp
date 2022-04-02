@@ -48,11 +48,66 @@ class Docs_model extends Model {
 						->where($con)->get();
 	}
 
-    public function getDocuments(){
+	public function count_active() {
+		return $this->db->table('documents')
+						->select_count('id')
+						->where('archive = ? and stat_id = ?', [0,2])->get();
+	}
+
+	public function count_archive() {
+		return $this->db->table('documents')
+						->select_count('id')
+						->where('archive',1)->get();
+	}
+
+	public function count_pending() {
+		return $this->db->table('documents')
+						->select_count('id')
+						->where('archive = ? and stat_id = ?', [0,1])->get();
+	}
+
+	public function getDocuments(){
         return $this->db->table('documents as d')
-						->select('d.id, d.user_id, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category, f.file, d.updated_at')
+						->select('d.id, d.user_id, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category')
 						->inner_join('states as s', 's.id = d.stat_id')
 						->inner_join('document_categories as dc', 'dc.id = d.doc_id')
+						->get_all();
+    }
+
+	public function getActiveDocuments(){
+        return $this->db->table('documents as d')
+						->select('d.id, d.user_id, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category')
+						->inner_join('states as s', 's.id = d.stat_id')
+						->inner_join('document_categories as dc', 'dc.id = d.doc_id')
+						->where('stat_id = ? and archive = ?', [2,0])
+						->get_all();
+    }
+
+    public function getPublishedDocuments(){
+        return $this->db->table('documents as d')
+						->select('d.id, d.user_id, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category')
+						->inner_join('states as s', 's.id = d.stat_id')
+						->inner_join('document_categories as dc', 'dc.id = d.doc_id')
+						->where('stat_id', 2)
+						->get_all();
+    }
+
+	public function getPendingDocuments() {
+        return $this->db->table('documents as d')
+						->select('d.id, d.user_id, u.username, u.email, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category')
+						->inner_join('states as s', 's.id = d.stat_id')
+						->inner_join('document_categories as dc', 'dc.id = d.doc_id')
+						->inner_join('users as u', 'u.id = d.user_id')
+						->where('stat_id = ? and  user_id != ?', [1,0])
+						->get_all();
+    }
+
+	public function getArchiveDocuments() {
+        return $this->db->table('documents as d')
+						->select('d.id, d.user_id, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category')
+						->inner_join('states as s', 's.id = d.stat_id')
+						->inner_join('document_categories as dc', 'dc.id = d.doc_id')
+						->where('stat_id = ? and  archive = ?', [2,1])
 						->get_all();
     }
 
@@ -65,11 +120,23 @@ class Docs_model extends Model {
 						->get_all();
     }
 
-	public function get_documents(){
-        return $this->db->table('documents')
-						->select('id, title, description, authors, filename, updated_at')
-						->get_all();
-    }
+	public function publish($id){
+		$data = [ 'stat_id' => 2, 'archive' => 0];
+		$result = $this->db->table('documents')->update($data)->where('id', $id)->exec();
+		if($result) return true;
+	}
+
+	public function republish($id){
+		$data = [ 'stat_id' => 2, 'archive' => 0];
+		$result = $this->db->table('documents')->update($data)->where('id', $id)->exec();
+		if($result) return true;
+	}
+
+	public function archive($id){
+		$data = [ 'archive' => 1];
+		$result = $this->db->table('documents')->update($data)->where('id', $id)->exec();
+		if($result) return true;
+	}
 
 	public function getDocument($id){
 
@@ -78,10 +145,9 @@ class Docs_model extends Model {
 		];
 
         return $this->db->table('documents as d')
-						->select('d.id, d.title, d.description,d.pub_year,d.publisher, d.authors, s.state, d.filename, dc.category, f.file, d.uploaded_at')
+						->select('d.id, d.title, d.description,d.pub_year,d.publisher, d.authors, s.state, d.filename, dc.category, d.uploaded_at')
 						->inner_join('states as s', 's.id = d.stat_id')
 						->inner_join('document_categories as dc', 'dc.id = d.doc_id')
-						->inner_join('file_categories as f', 'f.id = d.file_id')
 						->where($condition)
 						->get();
     }
@@ -116,23 +182,23 @@ class Docs_model extends Model {
 		return $this->db->table('documents')->insert($data)->exec();
 	}
 
-	public function update_document_text($id, $title, $desc, $author, $year, $publisher, $status, $category, $file, $updated) {
-		$data = [
-			'title' => $title,
-			'description' => $desc,
-			'authors' => $author,
-			'pub_year' => $year,
-			'publisher' => $publisher,
-			'stat_id' => $status,
-			'doc_id' => $category,
-			'file_id' => $file,
-			'updated_at' => $updated
-		];
+	// public function update_document_text($id, $title, $desc, $author, $year, $publisher, $status, $category, $file, $updated) {
+	// 	$data = [
+	// 		'title' => $title,
+	// 		'description' => $desc,
+	// 		'authors' => $author,
+	// 		'pub_year' => $year,
+	// 		'publisher' => $publisher,
+	// 		'stat_id' => $status,
+	// 		'doc_id' => $category,
+	// 		'file_id' => $file,
+	// 		'updated_at' => $updated
+	// 	];
 
-		return $this->db->table('documents')->update($data)->where('id', $id)->exec();
-	}
+	// 	return $this->db->table('documents')->update($data)->where('id', $id)->exec();
+	// }
 
-	public function update_document($id, $title, $desc, $author, $year, $publisher, $status, $filename, $category, $file, $updated) {
+	public function update_document($id, $title, $desc, $author, $year, $publisher, $status, $filename, $category, $updated) {
 		$data = [
 			'title' => $title,
 			'description' => $desc,
@@ -142,7 +208,6 @@ class Docs_model extends Model {
 			'stat_id' => $status,
 			'filename' => $filename,
 			'doc_id' => $category,
-			'file_id' => $file,
 			'updated_at' => $updated
 		];
 
@@ -153,34 +218,31 @@ class Docs_model extends Model {
 		return $this->db->table('documents')->where('id', $id)->delete()->exec();
 	}
 
-	public function check_document($name) {
-		return $this->db->table('documents')->select('filename')->where('filename', $name)->get();
-	}
+	// public function check_document($name) {
+	// 	return $this->db->table('documents')->select('filename')->where('filename', $name)->get();
+	// }
 
 	public function getDocCategories() {
 		return $this->db->table('document_categories')->get_all();
 	}
 
 	public function countCitations($id) {
-		return $this->db->raw('SELECT count(*) FROM citationscopy AS c
+		return $this->db->raw('SELECT count(*) as count FROM citationscopy AS c
 							INNER JOIN documents AS d ON d.id = c.doc_id
 							WHERE d.id = ? AND c.cited = 1', array($id));
 	}
 
-	public function countDocuments($id) {
-		return $this->db->raw('SELECT count(d.id) from documents AS d INNER JOIN document_categories as dc ON dc.id = d.doc_id where dc.id = ?', array($id));
-	}
+	// public function countDocuments($id) {
+	// 	return $this->db->raw('SELECT count(d.id) from documents AS d INNER JOIN document_categories as dc ON dc.id = d.doc_id where dc.id = ?', array($id));
+	// }
 
 	public function search($search) {
         return $this->db->table('documents as d')
-                        ->select('d.id, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category, fc.file, d.uploaded_at , d.updated_at')
-                        ->inner_join('states as s' ,'s.id = d.stat_id')
-                        ->inner_join('document_categories as dc', 'dc.id = d.doc_id')
-                        ->inner_join('file_categories as fc', 'fc.id = d.file_id')
-                        ->like('d.title', "%".$search."%")
-                        ->or_like('fc.file', "%".$search."%")
-                        ->where('dc.id', 'd.doc_id')
-                        ->get_all();
+					->select('d.id, d.title, d.description, d.authors, d.pub_year, d.publisher, s.state, d.filename, dc.category, d.uploaded_at , d.updated_at')
+					->inner_join('states as s' ,'s.id = d.stat_id')
+					->inner_join('document_categories as dc', 'dc.id = d.doc_id')
+					->like('d.title', "%".$search."%")
+					->get_all();
     }
 }
 ?>

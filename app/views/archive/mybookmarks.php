@@ -1,13 +1,4 @@
-<?php
-  require_once('class/DBConnection.php');
-
-  $db = new DBConnection();
-/*
-  if (!empty($_SESSION['email'])) {
-   $result = $db->getProfile($_SESSION['id']);
-  }*/
-  $modal_id = [];
-?>
+<?php $modal_id = []; ?>
 
 <!DOCTYPE html>
 <html lang="en">

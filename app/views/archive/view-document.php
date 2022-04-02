@@ -1,14 +1,3 @@
-<?php
-  require_once('class/DBConnection.php');
-
-  $db = new DBConnection();
-/*
-  if (!empty($_SESSION['email'])) {
-   $result = $db->getProfile($_SESSION['id']);
-  }
- */
-?>
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -28,8 +17,6 @@
     <header id="header" class="fixed-top">
             <div class="container d-flex align-items-center">
                 <h1 class="logo me-auto"><a href="<?php echo site_url('nav/index'); ?>">Elite Researcher</a></h1>
-                <!-- Uncomment below if you prefer to use an image logo -->
-                <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
                 <nav id="navbar" class="navbar order-last order-lg-0">
                     <ul>
@@ -114,8 +101,8 @@
                 else echo $data['title']; ?>
           </div>
             <div>
-              <!-- <button class="btns" id="prev-page"> --><i id="prev-page" class="btns fa fa-arrow-circle-left"></i> <span>Prev</span><!-- </button> -->
-              <!-- <button class="btns" id="next-page"> --><span>Next</span> <i id="next-page" class="btns fa fa-arrow-circle-right"></i><!-- </button> -->
+              <i id="prev-page" class="btns fa fa-arrow-circle-left"></i> <span>Prev</span>
+              <span>Next</span> <i id="next-page" class="btns fa fa-arrow-circle-right"></i>
               <span id="page-count-container" class="page-info">Page <span id="page-num"></span> of <span id="page-count"></span></span>
           </div>
         </div>
@@ -129,79 +116,21 @@
           <div class="info">
             <div class="title-cite d-flex flex-row justify-content-between align-items-between">
               <h4><?php echo $data['title']; ?></h4>
-              <p style="font-size: 20px;font-weight: bold"><i class="bi bi-link" title="Cite" data-toggle="modal" data-target="#exampleModalCenter"></i></p>
             </div>
-            <h6><?php echo $data['authors']; ?> <span><?php echo date('M d, Y', strtotime($data['uploaded_at'])); ?></span></h6>
+            <h6><?php echo $data['authors']; ?> <span><?php echo date('M d, Y', strtotime($data['pub_year'])); ?></span></h6>
             <p><?php echo $data['description'];?></p>
           </div>
         </div>
-        <!-- <div class="form-group">
-          <label for="search" class="form-label col-lg fs-4">Text to be cited here</label>
-          <textarea name="search" id="search" cols="45" rows="5" class="form-control text-wrap" style="resize:none;"></textarea>
-          <div class="d-flex flex-row align-items-end justify-content-end p-3">
-            <button type="submit" id="generate" name="generate" class="btn btn-success px-2 py-1">Generate Reference</button>
-          </div>
-          <label for="reference" class="form-label col-lg fs-4">Generated Reference</label> -->
-          <!-- <textarea name="reference" id="reference" cols="45" rows="5" class="form-control text-wrap" style="resize:none;"></textarea> -->
-          <!-- <div class="d-flex flex-row align-items-end justify-content-end p-3">
-            <input type="submit" id="save" name="save" class="btn btn-success px-2 py-1 mx-2" value="Save">
-            <input type="submit" id="copy" name="copy" class="btn btn-secondary px-2 py-1" value="Copy">
-          </div>
-        </div>  -->
       </div>     
     </div>
     </main>
 
-    <!-- Vendor JS Files -->
     <!-- ======= Footer ======= -->
     <?php include('default/footer.php'); ?>
 
-    <!-- Vendor JS Files -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <?php echo load_js(array('assets/js/pdf')); ?>
     <?php echo load_js(array('assets/js/pdf.worker')); ?>
     <?php echo load_js(array('assets/js/pdf_viewer2')); ?>
     <?php echo load_js(array('assets/js/preventSS')); ?>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Cite this document?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span class="border-0" aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-              <p id="citation"><?php echo $db->generateCitation($data['id']); ?></p>
-
-          </div>
-          <div class="modal-footer">
-            <p id="message" class="text-success">Citation copied.</p>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success" onclick="copyText('citation');">Copy</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script>
-      $('#message').hide();
-function copyText(id)
-{
-var r = document.createRange();
-r.selectNode(document.getElementById(id));
-window.getSelection().removeAllRanges();
-window.getSelection().addRange(r);
-document.execCommand('copy');
-window.getSelection().removeAllRanges();
-$('#message').show();
-}
-  
-    </script>
    </body>
 </html>

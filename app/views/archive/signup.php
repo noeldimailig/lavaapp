@@ -1,15 +1,3 @@
-<?php/*
-
-  require_once('class/database.php');
-
-  $con = new database();
-  session_start();
-
-  // if (empty($_SESSION['email'])) {
-  //   header('location:index.php');
-  // }*/
-
-?>
 
 <!DOCTYPE html>
 
@@ -28,9 +16,6 @@
       <div class="container d-flex align-items-center">
 
         <h1 class="logo me-auto"><a href="index.php">Elite Researcher</a></h1>
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
         <nav id="navbar" class="navbar order-last order-lg-0">
           <ul>
             <li><a href="<?php echo site_url('nav/index'); ?>">Home</a></li>
@@ -70,19 +55,19 @@
               <form id="signup-form" action="<?php echo site_url('user/register'); ?>" method="post">
                 <div class="form-group col-12">
                   <label for="name" class="col-sm-2 col-form-label col-form-label-lg">Username</label>
-                  <input type="text" id="name" name="name" class="login-text mb-2 form-control" placeholder="Username" required autofocus>
+                  <input type="text" id="sname" name="sname" class="login-text mb-2 form-control" placeholder="Username" required autofocus>
                 </div>
                 <div class="form-group col-12">
                   <label for="email" class="col-sm-2 col-form-label col-form-label-lg">Email</label>
-                  <input type="email" id="email" name="email" class="login-text mb-2 form-control" placeholder="Email address" required>
+                  <input type="email" id="semail" name="semail" class="login-text mb-2 form-control" placeholder="Email address" required>
                 </div>
                 <div class="form-group">
                   <label for="password" class="col-sm-2 col-form-label col-form-label-lg">Password</label>
-                  <input type="password" id="password" name="password" class="login-text mb-3 form-control" placeholder="Password" required>
+                  <input type="password" id="spassword" name="spassword" class="login-text mb-3 form-control" placeholder="Password" required>
                 </div>
                 <div class="form-group">
                   <label for="confirm" class="col-sm-2 col-form-label col-form-label-lg">Password</label>
-                  <input type="password" id="confirm" name="confirm" class="login-text mb-3 form-control" placeholder="Confirm Password" required>
+                  <input type="password" id="sconfirm" name="sconfirm" class="login-text mb-3 form-control" placeholder="Confirm Password" required>
                 </div>
                 <div class="form-group">
                   <input type="submit" class="btn btn-lg btn-block form-control" value="Sign Up" id="signup" name="signup">
@@ -93,10 +78,14 @@
       </div>
     </main>
   
-    <?php include('default/footer.php'); ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <?php echo load_js(array('assets/vendor/swiper/swiper-bundle.min')); ?>
+    <?php echo load_js(array('assets/vendor/aos/aos')); ?>
+    <?php echo load_js(array('assets/vendor/bootstrap/js/bootstrap.bundle.min')); ?>
+    <!-- Template Main JS File -->
+    <?php echo load_js(array('assets/js/main')); ?>
     <script>
-      $('signup-form').submit(function(e) {
-        e.preventDefault();
+      $('#signup-form').submit(function(e) {
         var form = $(this);
         var url = form.attr('action');
         $.ajax({

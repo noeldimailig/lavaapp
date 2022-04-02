@@ -1,54 +1,203 @@
-var fileobj;
-function upload_file(e) {
+$(document).ready(function(){
+  $('#admins').DataTable();
+  $('#admins-archive').DataTable();
+
+  $('input[type="file"]').change(function(e){
+    var fileName = e.target.files[0].name;
+    $('#drop-text').html(fileName);
+  });
+
+  $('#drag-area').on('dragover', function(e){
+    e.stopPropagation();
     e.preventDefault();
-    fileobj = e.dataTransfer.files[0];
-    ajax_file_upload(fileobj);
+    $(this).addClass('file_drag_over');
+    return false;
+  });
+  $('#drag-area').on('dragleave', function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    $(this).removeClass('file_drag_over');
+    return false;
+  });
+
+  $('#drag-area').on('drop', function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    $(this).removeClass('file_drag_over');
+
+    var file = document.getElementById('file');
+    file.files = e.originalEvent.dataTransfer.files;
+    $('#drop-text').html(file.files[0].name);
+  });
+
+  $('#insert').on('submit', function(e){
+    e.preventDefault();
+    var form = $(this)[0];
+    var url = form.getAttribute('action');
+
+    var formData = new FormData(form);
+    var file = document.getElementById('file').files;
+    formData.append('file', file);
+
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(response) {
+        var res = JSON.parse(response);
+        if(res.status != false){
+          $('#message').show();
+          alertSuccess('message', res.msg);
+          $('#lname').val('');
+          $('#fname').val('');
+          $('#email').val('');
+          $('#uname').val('');
+          $('#pass').val('');
+          $('#conpass').val('');
+          $('#drop-text').html('Drop Profile Picture Here');
+          setTimeout(function(){
+            $('#message-content').remove();
+            $('#message').hide();
+          }, 3000);
+          setTimeout(function(){location.reload();},4000);
+        } else {
+          $('#message').show();
+          alertError('message', res.msg);
+          setTimeout(function(){
+            $('#message-content').remove();
+            $('#message').hide();
+          }, 3000);
+        }
+      }
+    });
+  });
+
+  $('input[type="file"]').change(function(e){
+    var u_file = e.target.files[0].name;
+    $('#u-drop-text').html(u_file);
+  });
+
+  $('#u-drag-area').on('dragover', function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    $(this).addClass('file_drag_over');
+    return false;
+  });
+  $('#u-drag-area').on('dragleave', function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    $(this).removeClass('file_drag_over');
+    return false;
+  });
+
+  $('#u-drag-area').on('drop', function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    $(this).removeClass('file_drag_over');
+
+    var u_file = document.getElementById('u_file');
+    u_file.files = e.originalEvent.dataTransfer.files;
+    $('#u-drop-text').html(u_file.files[0].name);
+  });
+
+  $('#update').on('submit', function(e){
+    e.preventDefault();
+    var u_form = $(this)[0];
+    var u_url = u_form.getAttribute('action');
+
+    var u_formData = new FormData(u_form);
+    var u_file = document.getElementById('u_file').files;
+    u_formData.append('file', u_file);
+
+    $.ajax({
+      url: u_url,
+      type: 'POST',
+      data: u_formData,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(response) {
+        var res = JSON.parse(response);
+        if(res.status != false){
+          $('#u-message').show();
+          alertSuccess('u-message', res.msg);
+          $('#u_lname').val('');
+          $('#u_fname').val('');
+          $('#u_email').val('');
+          $('#u_uname').val('');
+          $('#u_pass').val('');
+          $('#u-drop-text').html('Drop Profile Picture Here');
+          setTimeout(function(){
+            $('#message-content').remove();
+            $('#u-message').hide();
+          }, 3000);
+
+          setTimeout(function(){location.reload();},4000);
+        } else {
+          $('#u-message').show();
+          alertError('u-message', res.msg);
+          setTimeout(function(){
+            $('#message-content').remove();
+            $('#u-message').hide();
+          }, 3000);
+        }
+      }
+    });
+  });
+});
+
+function alertSuccess(form, message) {
+  $('#'+form).append(
+    '<div id="message-content">' +
+      '<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">' +
+        '<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">' +
+          '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>' +
+        '</symbol>' +
+      '</svg>' +
+      '<div id="notify" style="display:none;" class="alert alert-success fade show d-flex align-items-center" role="alert">' +
+        '<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>' +
+        '<div>' + message + '</div>' +
+      '</div>' +
+    '</div>');
 }
-  
-function file_explorer() {
-    document.getElementById('file').click();
-    document.getElementById('file').onchange = function() {
-        fileobj = document.getElementById('file').files[0];
-        ajax_file_upload(fileobj);
-    };
+
+function alertError(form, message) {
+  $('#'+form).append(
+    '<div id="message-content">' +
+      '<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">' +
+        '<symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">' +
+          '<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>' +
+        '</symbol>' +
+      '</svg>' +
+      '<div class="alert alert-danger fade show d-flex align-items-center" role="alert">' +
+        '<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>' +
+          '<div>' + message + '</div>' +
+      '</div>' +
+    '</div>');
 }
-  
-function ajax_file_upload(file_obj) {
-    if(file_obj != undefined) {
-        $('#validate').submit(function(e) {
-            //e.preventDefault();
-            var form = $(this);
-            var url = form.attr('action');
-            $.ajax({
-              url: url,
-              type: 'POST',
-              data: form.serialize(),
-              success: function(response) {
-                if(response == "error"){
-                    failed_alert();
-                }else{
-                   success_alert();
-                }
-              }
-            });
-          });
-    }else{
-        $('#validate').submit(function(e) {
-            //e.preventDefault();
-            var form = $(this);
-            var url = form.attr('action');
-            $.ajax({
-              url: url,
-              type: 'POST',
-              data: form.serialize(),
-              success: function(response) {
-                if(response == "error"){
-                    failed_alert();
-                }else{
-                   success_alert();
-                }
-              }
-            });
-          });
-    }
-}
+
+
+$('.edit').click(function(){
+  var $row = $(this).closest('tr');
+  var id = $row.find('.t_id').text();
+  var uname = $row.find('.t_uname').text();
+  var email = $row.find('.t_email').text();
+  var lname = $row.find('.t_lname').text();
+  var fname = $row.find('.t_fname').text();
+  var role = $row.find('.t_role').text();
+  var filename = $row.find('.t_file').text();
+
+  console.log(id,uname,email,lname,fname,filename);
+
+  $('#u_uid').val(id);
+  $('#u_prevfile').val(filename);
+  $('#u_uname').val(uname);
+  $('#u_email').val(email);
+  $('#u_lname').val(lname);
+  $('#u_fname').val(fname);
+  $('#u_category option:selected').text(role);
+  $('#u-drop-text').html(filename);
+});

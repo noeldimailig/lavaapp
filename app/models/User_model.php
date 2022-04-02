@@ -37,14 +37,11 @@ class User_model extends Model{
         if($result) return true;
     }
 
-    public function insert($uname, $email, $pass, $program, $campus, $dep, $role) {
+    public function insert($uname, $email, $pass, $role) {
         $data = [
             'username' => $uname,
             'password' => $pass,
             'email' => $email,
-            'program_id' => $program,
-            'campus_id' => $campus,
-            'dep_id' => $dep,
             'role_id' => $role
         ];
 
@@ -52,15 +49,12 @@ class User_model extends Model{
         if($result) return true;
     }
 
-    public function insert_profile($profile, $uname, $email, $pass, $program, $campus, $dep, $role) {
+    public function insert_profile($profile, $uname, $email, $pass, $role) {
         $data = [
             'username' => $uname,
             'profile' => $profile,
             'password' => $pass,
             'email' => $email,
-            'program_id' => $program,
-            'campus_id' => $campus,
-            'dep_id' => $dep,
             'role_id' => $role
         ];
 
@@ -68,73 +62,49 @@ class User_model extends Model{
         if($result) return true;
     }
 
-    public function update_just_text($id, $uname, $email, $pass, $program, $campus, $dep, $role) {
+    public function update_just_text($id, $uname, $email, $pass, $role) {
         $data = [
             'username' => $uname,
             'password' => $pass,
             'email' => $email,
-            'program_id' => $program,
-            'campus_id' => $campus,
-            'dep_id' => $dep,
             'role_id' => $role
         ];
-        $con = [
-            'id' => $id
-        ];
-
-        $result = $this->db->table('users')->update($data)->where($con)->exec();
+        $result = $this->db->table('users')->update($data)->where('id',$id)->exec();
         if($result) return true;
     }
 
-    public function update_profile($id, $profile, $uname, $email, $pass, $program, $campus, $dep, $role) {
+    public function update_profile($id, $profile, $uname, $email, $pass, $role) {
         $data = [
             'username' => $uname,
             'profile' => $profile,
             'password' => $pass,
             'email' => $email,
-            'program_id' => $program,
-            'campus_id' => $campus,
-            'dep_id' => $dep,
             'role_id' => $role
         ];
 
-        $con = [
-            'id' => $id
-        ];
-
-        $result = $this->db->table('users')->update($data)->where($con)->exec();
+        $result = $this->db->table('users')->update($data)->where('id',$id)->exec();
         if($result) return true;
     }
 
-    public function update($id, $uname, $fname, $lname, $email, $program, $campus, $dep) {
+    public function update($id, $uname, $fname, $lname, $email) {
         $data = [
             'username' => $uname,
             'firstname' => $fname,
             'lastname' => $lname,
             'email' => $email,
-            'program_id' => $program,
-            'campus_id' => $campus,
-            'dep_id' => $dep
         ];
 
-        $cond = [
-            'id' => $id,
-        ];
-
-        $result = $this->db->table('users')->update($data)->where($cond)->exec();
+        $result = $this->db->table('users')->update($data)->where('id', $id)->exec();
         if($result) return true;
     }
 
-    public function profile_update($id, $profile, $uname, $fname, $lname, $email, $program, $campus, $dep) {
+    public function profile_update($id, $profile, $uname, $fname, $lname, $email) {
         $data = [
             'profile' => $profile,
             'username' => $uname,
             'firstname' => $fname,
             'lastname' => $lname,
             'email' => $email,
-            'program_id' => $program,
-            'campus_id' => $campus,
-            'dep_id' => $dep
         ];
 
         $cond = [
@@ -146,13 +116,11 @@ class User_model extends Model{
     }
 
     public function count_admin() {
-		$con = [
-			'r.role' => 'Admin'
-		];
 		return $this->db->table('users as u')
 						->select_count('u.id')
 						->inner_join('roles as r', 'u.role_id=r.id')
-						->where($con)->get();
+						->where('r.role = ? or r.role = ?', ['Admin', 'Document Admin'])
+                        ->get();
 	}
 
 	public function count_user() {
@@ -166,16 +134,18 @@ class User_model extends Model{
 	}
 
     public function getAdmins() {
-        $condition = [
-            'r.role' => 'Admin'
-        ];
         return $this->db->table('users as u')
-                        ->select('u.id, u.username, u.email, r.role, c.campus, d.dep, p.program')
-                        ->inner_join('campuses as c', 'u.campus_id=c.id')
-                        ->inner_join('departments as d', 'u.dep_id=d.id')
-                        ->inner_join('programs as p', 'u.program_id=p.id')
+                        ->select('u.id, u.profile, u.username, u.email, u.password, u.lastname, u.firstname, u.status, r.role')
                         ->inner_join('roles as r', 'u.role_id=r.id')
-                        ->where($condition)
+                        ->where('r.role != ? and status = ?', ['User', 1])
+                        ->get_all();
+    }
+
+    public function getArchiveAdmins() {
+        return $this->db->table('users as u')
+                        ->select('u.id, u.profile, u.username, u.email, u.password, u.lastname, u.firstname, r.role')
+                        ->inner_join('roles as r', 'u.role_id=r.id')
+                        ->where('r.role != ? and status = ?', ['User', 0])
                         ->get_all();
     }
 
@@ -185,32 +155,36 @@ class User_model extends Model{
             'u.id' => $id
         ];
         return $this->db->table('users as u')
-                        ->select('u.id, u.username, u.profile, u.password, u.email, r.role, c.campus, d.dep, p.program')
-                        ->inner_join('campuses as c', 'u.campus_id=c.id')
-                        ->inner_join('departments as d', 'u.dep_id=d.id')
-                        ->inner_join('programs as p', 'u.program_id=p.id')
+                        ->select('u.id, u.profile, u.username, u.profile, u.lastname, u.firstname, u.password, u.email, r.role')
                         ->inner_join('roles as r', 'u.role_id=r.id')
                         ->where($condition)
                         ->get_all();
     }
 
-    public function deleteAdmin($id) {
-        $con = [
-            'id' => $id
-        ];
-
-        return $this->db->table('users')->delete()->where($con)->exec();
+    public function updateStatus($id, $status, $table) {
+        $data = [ 'status' => $status ];
+        return $this->db->table($table)->update($data)->where('id', $id)->exec();
     }
 
     public function getUsers() {
         $condition = [
-            'r.role' => 'User'
+            'r.role' => 'User',
+            'u.status' => 1
         ];
         return $this->db->table('users as u')
-                        ->select('u.id, u.username, u.email, r.role, c.campus, d.dep, p.program')
-                        ->inner_join('campuses as c', 'u.campus_id=c.id')
-                        ->inner_join('departments as d', 'u.dep_id=d.id')
-                        ->inner_join('programs as p', 'u.program_id=p.id')
+                        ->select('u.id, u.profile, u.username, u.lastname, u.firstname, u.password, u.email, u.status, r.role')
+                        ->inner_join('roles as r', 'u.role_id=r.id')
+                        ->where($condition)
+                        ->get_all();
+    }
+
+    public function getUsersArchive() {
+        $condition = [
+            'r.role' => 'User',
+            'u.status' => 0
+        ];
+        return $this->db->table('users as u')
+                        ->select('u.id, u.profile, u.username, u.email, u.lastname, u.firstname, u.password, r.role')
                         ->inner_join('roles as r', 'u.role_id=r.id')
                         ->where($condition)
                         ->get_all();
@@ -222,10 +196,7 @@ class User_model extends Model{
             'u.id' => $id
         ];
         return $this->db->table('users as u')
-                        ->select('u.id, u.username, u.profile, u.email, r.role, c.campus, d.dep, p.program')
-                        ->inner_join('campuses as c', 'u.campus_id=c.id')
-                        ->inner_join('departments as d', 'u.dep_id=d.id')
-                        ->inner_join('programs as p', 'u.program_id=p.id')
+                        ->select('u.id, u.profile, u.username, u.lastname, u.firstname, u.password, u.email, r.role')
                         ->inner_join('roles as r', 'u.role_id=r.id')
                         ->where($condition)
                         ->get_all();
@@ -238,10 +209,7 @@ class User_model extends Model{
         ];
 
         $result = $this->db->table('users as u')
-                 ->select('u.id, u.username, u.firstname, u.lastname, u.profile, u.email, r.id as role_id, c.campus, d.dep, p.program')
-                 ->inner_join('campuses as c', 'u.campus_id=c.id')
-                 ->inner_join('departments as d', 'u.dep_id=d.id')
-                 ->inner_join('programs as p', 'u.program_id=p.id')
+                 ->select('u.id, u.username, u.firstname, u.lastname, u.profile, u.email, r.id as role_id')
                  ->inner_join('roles as r', 'u.role_id=r.id')
                  ->where($condition)
                  ->get();
@@ -258,17 +226,15 @@ class User_model extends Model{
 
     public function forgot($email, $newpass, $code) {
         $result = $this->db->table('users as u')
-            ->select('u.id, u.username, u.firstname, u.lastname, u.profile, u.email, r.id as role_id, c.campus, d.dep, p.program')
-            ->inner_join('campuses as c', 'u.campus_id=c.id')
-            ->inner_join('departments as d', 'u.dep_id=d.id')
-            ->inner_join('programs as p', 'u.program_id=p.id')
+            ->select('u.id, u.username, u.firstname, u.lastname, u.profile, u.email, r.id as role_id')
             ->inner_join('roles as r', 'u.role_id=r.id')
             ->where('u.email', $email)
             ->get();
         
         $data = [
             'validation_code' => $code,
-            'status' => 0
+            'status' => 0,
+            'password' => $newpass
         ];
         if($result){
             $verify = $this->db->table('users as u')->update($data)->where('u.email', $email)->exec();

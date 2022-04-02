@@ -101,10 +101,9 @@ class Cite_model extends Model{
     public function generateAPA($id) {
         $result = $this->db->table('documents as d')
                     ->select('d.id, d.title, d.description, d.authors, d.pub_year, d.publisher,
-                    s.state, d.filename, dc.category, fc.file, d.uploaded_at , d.updated_at')
+                    s.state, d.filename, dc.category, d.uploaded_at , d.updated_at')
                     ->inner_join('states as s','s.id = d.stat_id')
                     ->inner_join('document_categories as dc', 'dc.id = d.doc_id')
-                    ->inner_join('file_categories as fc', 'fc.id = d.file_id')
                     ->where('d.id', $id)
                     ->get(); 
 
@@ -174,10 +173,9 @@ class Cite_model extends Model{
     public function generateMLA($id) {
         $result = $this->db->table('documents as d')
                     ->select('d.id, d.title, d.description, d.authors, d.pub_year, d.publisher,
-                    s.state, d.filename, dc.category, fc.file, d.uploaded_at , d.updated_at')
+                    s.state, d.filename, dc.category, d.uploaded_at , d.updated_at')
                     ->inner_join('states as s','s.id = d.stat_id')
                     ->inner_join('document_categories as dc', 'dc.id = d.doc_id')
-                    ->inner_join('file_categories as fc', 'fc.id = d.file_id')
                     ->where('d.id', $id)
                     ->get(); 
 
